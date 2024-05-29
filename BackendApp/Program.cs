@@ -6,6 +6,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<IPeopleService, PeopleService>();
 
+builder.Services.AddKeyedSingleton<IRandomService, RandomService>("randomSingleton");
+builder.Services.AddKeyedScoped<IRandomService, RandomService>("randomScope");
+builder.Services.AddKeyedTransient<IRandomService, RandomService>("randomTransient");
+
+
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
