@@ -1,4 +1,6 @@
+using BackendApp.Models;
 using BackendApp.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,11 @@ builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddHttpClient<IPostService, PostService>(c =>
 {
     c.BaseAddress = new Uri(builder.Configuration["BaseUrlPosts"]);
+});
+
+builder.Services.AddDbContext<StoreContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("StoreConnection"));
 });
 
 builder.Services.AddControllers();
