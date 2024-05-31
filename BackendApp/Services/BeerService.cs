@@ -69,23 +69,34 @@ namespace BackendApp.Services
 
         public async Task<BeerDto> Update(int id, UpdateBeerDto updateBeerDto)
         {
-            var beer = await _beerRepository.GetById(id);
-
-            if(beer != null)
+            try
             {
-                beer.Name = updateBeerDto.Name;
-                beer.Alcohol = updateBeerDto.Alcohol;
-                beer.BrandId = updateBeerDto.BrandId;
+                Console.WriteLine(id);
+                Console.WriteLine(updateBeerDto);
+                var beer = await _beerRepository.GetById(id);
+                Console.WriteLine(beer);
 
-                _beerRepository.Update(beer);
-                await _beerRepository.Save();
+                if (beer != null)
+                {
+                    //beer = _mapper.Map<UpdateBeerDto,Beer>(updateBeerDto);
 
-                var beerDto = _mapper.Map<BeerDto>(beer);
+                    _beerRepository.Update(beer);
+                    await _beerRepository.Save();
 
-                return beerDto;
+                    var beerDto = _mapper.Map<BeerDto>(beer);
+
+                    return beerDto;
+                }
+                return null;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("hubo un error:"+e.ToString());
+                return null;
             }
 
-            return null;
+
+            
         }
     }
 }
