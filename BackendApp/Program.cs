@@ -15,6 +15,7 @@ builder.Services.AddKeyedSingleton<IRandomService, RandomService>("randomSinglet
 builder.Services.AddKeyedScoped<IRandomService, RandomService>("randomScope");
 builder.Services.AddKeyedTransient<IRandomService, RandomService>("randomTransient");
 
+builder.Services.AddKeyedScoped<ICommonService<BeerDto,CreateBeerDto,UpdateBeerDto>,BeerService>("BeerService");
 
 builder.Services.AddScoped<IPostService, PostService>();
 
