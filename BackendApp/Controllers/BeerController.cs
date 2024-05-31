@@ -19,7 +19,6 @@ namespace BackendApp.Controllers
         private ICommonService<BeerDto, CreateBeerDto, UpdateBeerDto> _beerService;
 
         public BeerController(
-            StoreContext context,
             IValidator<CreateBeerDto> createBeerValidator,
             IValidator<UpdateBeerDto> updateBeerValidator,
             [FromKeyedServices("BeerService")] ICommonService<BeerDto,CreateBeerDto,UpdateBeerDto> beerService
