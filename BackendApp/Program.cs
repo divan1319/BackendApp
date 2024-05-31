@@ -1,3 +1,4 @@
+using BackendApp.Automappers;
 using BackendApp.DTOs;
 using BackendApp.Models;
 using BackendApp.Repository;
@@ -29,6 +30,10 @@ builder.Services.AddHttpClient<IPostService, PostService>(c =>
 
 builder.Services.AddScoped<IRepository<Beer>, BeerRepository>();
 
+//mappers
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+//entity framework
 builder.Services.AddDbContext<StoreContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("StoreConnection"));

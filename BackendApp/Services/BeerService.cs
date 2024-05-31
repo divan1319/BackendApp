@@ -1,4 +1,5 @@
-﻿using BackendApp.DTOs;
+﻿using AutoMapper;
+using BackendApp.DTOs;
 using BackendApp.Models;
 using BackendApp.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -9,30 +10,20 @@ namespace BackendApp.Services
     {
  
         private IRepository<Beer> _beerRepository;
-
-        public BeerService(IRepository<Beer> beerRepository)
+        private IMapper _mapper;
+        public BeerService(IRepository<Beer> beerRepository,IMapper mapper)
         {
             _beerRepository = beerRepository;
+            _mapper = mapper;
         }
         public async Task<BeerDto> Add(CreateBeerDto createBeerDto)
         {
-            var beer = new Beer()
-            {
-                Name = createBeerDto.Name,
-                BrandId = createBeerDto.BrandId,
-                Alcohol = createBeerDto.Alcohol,
-            };
+            var beer = _mapper.Map<Beer>(createBeerDto);
 
             await _beerRepository.Add(beer);
             await _beerRepository.Save();
 
-            var beerDto = new BeerDto
-            {
-                Id = beer.BeerId,
-                Name = beer.Name,
-                Alcohol = beer.Alcohol,
-                BrandId = beer.BrandId
-            };
+            var beerDto = _mapper.Map<BeerDto>(beer);
 
             return beerDto;
         }
@@ -43,13 +34,7 @@ namespace BackendApp.Services
 
             if (beer != null)
             {
-                var beerDto = new BeerDto
-                {
-                    Id = beer.BeerId,
-                    Name = beer.Name,
-                    Alcohol = beer.Alcohol,
-                    BrandId = beer.BrandId
-                };
+                var beerDto = _mapper.Map<BeerDto>(beer);
 
                 _beerRepository.Delete(beer);
                 await _beerRepository.Save();
@@ -64,13 +49,7 @@ namespace BackendApp.Services
         {
             var beers = await _beerRepository.Get();
 
-            return beers.Select(b => new BeerDto
-            {
-                Id = b.BeerId,
-                Name = b.Name,
-                Alcohol = b.Alcohol,
-                BrandId = b.BrandId
-            });
+            return beers.Select(b => _mapper.Map<BeerDto>(b));
         }
             
 
@@ -80,13 +59,7 @@ namespace BackendApp.Services
 
             if (beer != null)
             {
-                var beerDto = new BeerDto
-                {
-                    Id = beer.BrandId,
-                    Name = beer.Name,
-                    Alcohol = beer.Alcohol,
-                    BrandId = beer.BrandId,
-                };
+                var beerDto = _mapper.Map<BeerDto>(beer);
 
                 return beerDto;
             }
@@ -107,13 +80,7 @@ namespace BackendApp.Services
                 _beerRepository.Update(beer);
                 await _beerRepository.Save();
 
-                var beerDto = new BeerDto
-                {
-                    Id = beer.BeerId,
-                    Name = beer.Name,
-                    Alcohol = beer.Alcohol,
-                    BrandId = beer.BrandId
-                };
+                var beerDto = _mapper.Map<BeerDto>(beer);
 
                 return beerDto;
             }
